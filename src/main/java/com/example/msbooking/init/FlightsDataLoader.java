@@ -42,15 +42,17 @@ public class FlightsDataLoader implements CommandLineRunner {
         while (usedFlightNumbers.size() < NUMBER_OF_FLIGHTS_TO_CREATE) {
             long flightNumber = 1000L + random.nextInt(50); // Ensure unique flight numbers up to 50 different ones
             if (!usedFlightNumbers.contains(flightNumber)) {
-                LocalDate departureTime = LocalDate.now().plusDays(random.nextInt(30));
+                LocalDate departureDate = LocalDate.now().plusDays(random.nextInt(30));
+                LocalDate returnDate = LocalDate.now().plusDays(random.nextInt(30));
                 String origin = origins.get(random.nextInt(origins.size()));
-                List<String> destination = Collections.singletonList(destinations.get(random.nextInt(destinations.size())));
+                String destination = destinations.get(random.nextInt(destinations.size()));
 
                 Flight flight = Flight.builder()
                         .flightNumber(flightNumber)
-                        .departureTime(departureTime)
+                        .departureDate(departureDate)
+                        .returnDate(returnDate)
                         .origin(origin)
-                        .destinations(destination)
+                        .destination(destination)
                         .amount(100.0f + random.nextFloat() * 500) // Pricing between $100 and $600
                         .build();
 

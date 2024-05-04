@@ -22,11 +22,9 @@ public class Flight {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private Long flightNumber;
-    private LocalDate departureTime;
+    private LocalDate departureDate;
+    private LocalDate returnDate;
     private String origin;
-    @ElementCollection
-    @CollectionTable(name = "flight_destinations", joinColumns = @JoinColumn(name = "flight_id"))
-    @Column(name = "destination")
-    private List<String> destinations;
+    private String destination;
     private Float amount;
 }
