@@ -7,12 +7,11 @@ import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 @Component
 public class FlightsDataLoader implements CommandLineRunner {
+    private static final int NUMBER_OF_FLIGHTS_TO_CREATE = 50;
     private final FlightRepository flightRepository;
     public FlightsDataLoader(FlightRepository flightRepository) {
         this.flightRepository = flightRepository;
@@ -20,26 +19,43 @@ public class FlightsDataLoader implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
+        loadFlightDataIfNeeded();
+    }
 
-        if(flightRepository.findAll() == null) {
-            List<String> origins = Arrays.asList("New York JFK", "London Heathrow", "Dubai International", "Tokyo Haneda", "Los Angeles LAX");
-            List<String> destinations = Arrays.asList("Paris CDG", "Shanghai Pudong", "Singapore Changi", "Hong Kong International", "Sydney Kingsford");
-            Random random = new Random();
-            DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+    private void loadFlightDataIfNeeded() {
+        if (flightRepository.count() < NUMBER_OF_FLIGHTS_TO_CREATE) { // Simple check to prevent re-insertion
+            createFlights();
+        }
+    }
 
-            for (int i = 1; i <= 50; i++) {
+    public void createFlights() {
+        long existingFlightsCount = flightRepository.count();
+        if (existingFlightsCount >= NUMBER_OF_FLIGHTS_TO_CREATE) {
+            return; // If there are already 50 or more flights, do nothing
+        }
+
+        Random random = new Random();
+        List<String> origins = Arrays.asList("New York JFK", "London Heathrow", "Dubai International", "Tokyo Haneda", "Los Angeles LAX");
+        List<String> destinations = Arrays.asList("Paris CDG", "Shanghai Pudong", "Singapore Changi", "Hong Kong International", "Sydney Kingsford");
+
+        Set<Long> usedFlightNumbers = new HashSet<>();
+        while (usedFlightNumbers.size() < NUMBER_OF_FLIGHTS_TO_CREATE) {
+            long flightNumber = 1000L + random.nextInt(50); // Ensure unique flight numbers up to 50 different ones
+            if (!usedFlightNumbers.contains(flightNumber)) {
+                LocalDate departureTime = LocalDate.now().plusDays(random.nextInt(30));
                 String origin = origins.get(random.nextInt(origins.size()));
-                List<String> destination = Arrays.asList(destinations.get(random.nextInt(destinations.size())));
+                List<String> destination = Collections.singletonList(destinations.get(random.nextInt(destinations.size())));
 
                 Flight flight = Flight.builder()
-                        .flightNumber(1000L + i)
-                        .departureTime(LocalDate.now().plusDays(random.nextInt(30))) // Departures within the next 30 days
+                        .flightNumber(flightNumber)
+                        .departureTime(departureTime)
                         .origin(origin)
                         .destinations(destination)
                         .amount(100.0f + random.nextFloat() * 500) // Pricing between $100 and $600
                         .build();
 
                 flightRepository.save(flight);
+                usedFlightNumbers.add(flightNumber); // Track used flight numbers to avoid duplicates
             }
         }
     }

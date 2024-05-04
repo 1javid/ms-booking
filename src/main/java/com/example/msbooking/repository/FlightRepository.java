@@ -14,4 +14,6 @@ public interface FlightRepository extends JpaRepository<Flight, Long> {
             @Param("origin") String origin,
             @Param("destination") String destination,
             @Param("departureTime") LocalDate departureTime);
+
+    boolean existsByFlightNumberAndDepartureTime(long l, LocalDate localDate);
 }
