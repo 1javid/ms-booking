@@ -27,4 +27,6 @@ public class Flight {
     private String origin;
     private String destination;
     private Float amount;
+    @ManyToOne
+    private Airplane airplane;
 }
