@@ -1,6 +1,9 @@
 package com.example.msbooking.init;
 
+import com.example.msbooking.model.entities.Airplane;
 import com.example.msbooking.model.entities.Flight;
+import com.example.msbooking.model.enums.EAirplane;
+import com.example.msbooking.repository.AirplaneRepository;
 import com.example.msbooking.repository.FlightRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -12,8 +15,10 @@ import java.util.*;
 @Component
 public class FlightsDataLoader implements CommandLineRunner {
     private static final int NUMBER_OF_FLIGHTS_TO_CREATE = 50;
+    private final AirplaneRepository airplaneRepository;
     private final FlightRepository flightRepository;
-    public FlightsDataLoader(FlightRepository flightRepository) {
+    public FlightsDataLoader(AirplaneRepository airplaneRepository, FlightRepository flightRepository) {
+        this.airplaneRepository = airplaneRepository;
         this.flightRepository = flightRepository;
     }
 
@@ -46,6 +51,19 @@ public class FlightsDataLoader implements CommandLineRunner {
                 LocalDate returnDate = LocalDate.now().plusDays(random.nextInt(30));
                 String origin = origins.get(random.nextInt(origins.size()));
                 String destination = destinations.get(random.nextInt(destinations.size()));
+                List<Airplane> listOfAirplanes = new ArrayList<>();
+
+                for (EAirplane eAirplane : EAirplane.values()) {
+                    Airplane airplane = airplaneRepository.findByAirplane(eAirplane);
+                    if (airplane == null) {
+                        airplane = Airplane.builder()
+                                .airplane(eAirplane)
+                                .build();
+                        listOfAirplanes.add(airplane);
+                    }
+                }
+
+                var airplane = listOfAirplanes.get(random.nextInt(listOfAirplanes.size()));
 
                 Flight flight = Flight.builder()
                         .flightNumber(flightNumber)
@@ -54,6 +72,7 @@ public class FlightsDataLoader implements CommandLineRunner {
                         .origin(origin)
                         .destination(destination)
                         .amount(100.0f + random.nextFloat() * 500) // Pricing between $100 and $600
+                        .airplane(airplane)
                         .build();
 
                 flightRepository.save(flight);
