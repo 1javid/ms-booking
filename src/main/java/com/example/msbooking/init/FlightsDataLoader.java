@@ -6,6 +6,7 @@ import com.example.msbooking.model.enums.EAirplane;
 import com.example.msbooking.repository.AirplaneRepository;
 import com.example.msbooking.repository.FlightRepository;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
@@ -13,6 +14,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 @Component
+@Order(2)
 public class FlightsDataLoader implements CommandLineRunner {
     private static final int NUMBER_OF_FLIGHTS_TO_CREATE = 50;
     private final AirplaneRepository airplaneRepository;
