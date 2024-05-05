@@ -49,8 +49,8 @@ public class FlightsDataLoader implements CommandLineRunner {
 
                 Flight flight = Flight.builder()
                         .flightNumber(flightNumber)
-                        .departureDate(departureDate)
-                        .returnDate(returnDate)
+                        .departureTime(departureDate)
+                        .returnTime(returnDate)
                         .origin(origin)
                         .destination(destination)
                         .amount(100.0f + random.nextFloat() * 500) // Pricing between $100 and $600

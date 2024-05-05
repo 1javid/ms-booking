@@ -9,7 +9,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 public interface FlightRepository extends JpaRepository<Flight, Long> {
-    @Query("SELECT f FROM Flight f JOIN f.destination d WHERE f.origin = :origin AND d = :destination AND f.departureDate = :departureDate")
+    @Query("SELECT f FROM Flight f JOIN f.destination d WHERE f.origin = :origin AND d = :destination AND f.departureTime = :departureTime")
     List<Flight> findByOriginAndDestinationAndDepartureTime(
             @Param("origin") String origin,
             @Param("destination") String destination,

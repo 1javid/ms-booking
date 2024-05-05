@@ -22,8 +22,8 @@ public class Flight {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private Long flightNumber;
-    private LocalDate departureDate;
-    private LocalDate returnDate;
+    private LocalDate departureTime;
+    private LocalDate returnTime;
     private String origin;
     private String destination;
     private Float amount;
