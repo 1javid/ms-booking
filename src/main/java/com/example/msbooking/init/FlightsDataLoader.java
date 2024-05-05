@@ -57,12 +57,7 @@ public class FlightsDataLoader implements CommandLineRunner {
 
                 for (EAirplane eAirplane : EAirplane.values()) {
                     Airplane airplane = airplaneRepository.findByAirplane(eAirplane);
-                    if (airplane == null) {
-                        airplane = Airplane.builder()
-                                .airplane(eAirplane)
-                                .build();
-                        listOfAirplanes.add(airplane);
-                    }
+                    listOfAirplanes.add(airplane);
                 }
 
                 var airplane = listOfAirplanes.get(random.nextInt(listOfAirplanes.size()));
