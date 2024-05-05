@@ -30,7 +30,15 @@ public class FlightServiceImpl implements FlightService {
 
     @Override
     public List<Flight> searchFlights(FlightSearch searchCriteria) {
-        return flightRepository.findByOriginAndDestinationAndDepartureTime(
-                searchCriteria.getOrigin(), searchCriteria.getDestination(), searchCriteria.getDepartureDate());
+        if (searchCriteria.getReturnTime() == null) {
+            return flightRepository.findByOriginAndDestinationAndDepartureTime(
+                    searchCriteria.getOrigin(), searchCriteria.getDestination(), searchCriteria.getDepartureTime());
+        } else if (searchCriteria.getDestination() == null && searchCriteria.getDepartureTime() == null && searchCriteria.getReturnTime() == null) {
+            return flightRepository.findByOrigin(searchCriteria.getOrigin());
+        } else if (searchCriteria.getOrigin() == null && searchCriteria.getDepartureTime() == null && searchCriteria.getReturnTime() == null) {
+            return flightRepository.findByDestination(searchCriteria.getDestination());
+        } else {
+            return flightRepository.findByOriginAndDestination(searchCriteria.getOrigin(), searchCriteria.getDestination());
+        }
     }
 }

@@ -13,6 +13,6 @@ import java.util.List;
 public class FlightSearch {
     private String origin;
     private String destination;
-    private LocalDate departureDate;
-    private LocalDate returnDate;
+    private LocalDate departureTime;
+    private LocalDate returnTime;
 }
