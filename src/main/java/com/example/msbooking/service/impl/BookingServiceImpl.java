@@ -33,7 +33,7 @@ public class BookingServiceImpl implements BookingService {
 
     @Override
     public List<Booking> findAllByCustomerId(Long customerId) {
-        return bookingRepository.getAllByCustomerId(customerId);
+        return bookingRepository.getAllByCustomer(customerId);
     }
 
     @Override
