@@ -19,6 +19,11 @@ public class BookingController {
     @Autowired
     private BookingService bookingService;
 
+    @GetMapping("/customer/{id}")
+    public ResponseEntity<List<Booking>> getAllBookingsByCustomerId(@PathVariable Long id) {
+        return ResponseEntity.ok(bookingService.findAllByCustomerId(id));
+    }
+
     @GetMapping
     public List<Booking> getAllBookings() {
         return bookingService.findAll();

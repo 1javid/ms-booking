@@ -12,7 +12,6 @@ import com.example.msbooking.repository.FlightRepository;
 import com.example.msbooking.service.BookingService;
 import org.springframework.stereotype.Service;
 
-import java.awt.print.Book;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,6 +29,11 @@ public class BookingServiceImpl implements BookingService {
         this.flightRepository = flightRepository;
         this.customerClient = customerClient;
         this.paymentClient = paymentClient;
+    }
+
+    @Override
+    public List<Booking> findAllByCustomerId(Long customerId) {
+        return bookingRepository.getAllByCustomerId(customerId);
     }
 
     @Override

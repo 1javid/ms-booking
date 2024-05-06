@@ -7,6 +7,8 @@ import com.example.msbooking.model.request.BookingRequest;
 import java.util.List;
 
 public interface BookingService {
+    List<Booking> findAllByCustomerId(Long customerId);
+
     List<Booking> findAll();
 
     BookingDTO getBookingById(Long id);
